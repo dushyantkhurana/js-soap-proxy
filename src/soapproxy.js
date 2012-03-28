@@ -1,3 +1,8 @@
+/*
+ * Copyright 2012, Serge V. Izmaylov
+ * Released under GPL Version 2 license.
+ */
+
 // published objects
 function SOAPProxyFabric() {
     // singleton fabric
@@ -42,6 +47,9 @@ function SOAPProxy(wsdl) {
 
     return this;
 }
+
+// public properties
+SOAPProxyFabric.version = "1.0";
 
 // public methods
 SOAPProxyFabric.fromUrl = function (source, async, callback) {

@@ -67,7 +67,7 @@ SOAPProxyFabric.fromUrl = function (source, async, callback) {
         if(async) {
             xhr.onreadystatechange = function() {
                 if(xhr.readyState == 4)
-                    SOAPProxyFabric._onGotWSDL(callback, xhr);
+                    SOAPProxyFabric._onGotWSDL(callback, xhr, source);
             }
         }
         xhr.send(null);
@@ -219,6 +219,8 @@ SOAPProxyOperation.prototype._parseOutput = function (doc) {
         if (msgname == "__selfref") {
             var altmsgname = this._opname + "Response"; // Try "<Method>Response"
             nd = SOAPProxyUtils._getElementsByTagName(doc, msg._nsmsg + altmsgname);
+            if (nd.length == 0) // Try SOAPENV prefix
+                nd = SOAPProxyUtils._getElementsByTagName(doc, msg._nssoapenv + altmsgname);
             if (nd.length == 0) // Fallback to unprefixed name
                 nd = SOAPProxyUtils._getElementsByTagName(doc, altmsgname);
             if (nd.length == 0) { // Try "<MessageName>"
@@ -300,14 +302,14 @@ SOAPProxyOperation.prototype._dispatchFailure = function (async, faultcallback) 
         return res;
 }
 
-SOAPProxyFabric._onGotWSDL = function(callback, xhr) {
+SOAPProxyFabric._onGotWSDL = function(callback, xhr, source) {
     var cache  = {};
     try {
         cache.proxy = SOAPProxyFabric.fromDOM(xhr.responseXML);
         cache.wsdl = xhr.responseXML;
         cache.wsdlText = xhr.responseText;
         if ((cache.proxy != null) && (cache.wsdl != null))
-            SOAPProxyFabric._wsdlCache[xhr.url] = cache;
+            SOAPProxyFabric._wsdlCache[source] = cache;
         else
             cache.proxy = SOAPProxyUtils._createError(500, "Error loading WSDL");
     } catch (e) {

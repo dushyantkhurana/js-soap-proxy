@@ -38,7 +38,6 @@ function SOAPProxy(wsdl) {
 
     // parse WSDL
     this._fetchBasicNamespaces();
-    debugger;
     this._fetchTypes();
     this._fetchElements();
     this._fetchMessages();

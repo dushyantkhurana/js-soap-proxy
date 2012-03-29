@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>ArraysService samples</title>
+    <link href="../css/samples.css" rel="stylesheet" type="text/css">
+</head>
+<body><div id="page-content">
+    <h1>ArraysService samples</h1>
+
+    <h2>ArraysService description</h2>
+    <p>
+        ArraysService operates with array types, defined in basic XMLSchema namespace and with custom types,
+        defined in service's WSDL. 
+    </p>
+    <p>
+        Service interface looks like that:
+    </p>
+    <pre class="code">
+type ArrayOfIds = array of int;
+
+type ArrayOfIdGroups = array of ArrayOfIds;
+
+service ArraysService {
+    method GiveMeIntArray(void) returns int[]; // just constant string
+    method JoinArrayOfStrings(string[]) returns string; // yes, strings from array joined together
+    method FilterInvalidIds(ArrayOfIds) returns ArrayOfIds; // non-positive values dropped
+    method FilterInvalidIdsInGroups(ArrayOfIdGroups) returns ArrayOfIdGroups; // the same in 2D array
+    method ReverseArray(Array) returns Array; // reverses generic Array (possibly with different element types)
+}
+    </pre>
+    <p>
+        All methods, their arguments and their results are formally defined in <a href="arrays-ws.php?wsdl">
+        WSDL</a>. ArraysService WSDL uses simpliest form of service description.
+    </p>
+
+    <h2>ArraysService implementation</h2>
+    <p>
+        ArraysService implemented with PHP SOAP extension
+        <a href="arrays-ws.php?service-source">(get PHP source)</a>. Ih has sample built-in
+        <a href="arrays-ws.php">human-readable documentation</a>
+
+    </p>
+
+    <h2>ArraysService clients</h2>
+    <p>
+        There are two types of webservice clients in this chapter. First is <a href="arrays-cli.php">PHP SOAP
+        extension native client</a> <a href="arrays-ws.php?client-source">(get PHP source)</a> Second uses our
+        browser-based JavaScript SOAP proxy. Here is list of pages (one per webservice method), showing
+        JavaScript SOAP proxy in action:
+    </p>
+    <ul>
+        <li><a href="arrays-GiveMeIntArray.htm">method GiveMeIntArray()</a></li>
+        <li><a href="arrays-JoinArrayOfStrings.htm">method JoinArrayOfStrings()</a></li>
+        <li><a href="arrays-FilterInvalidIds.htm">method FilterInvalidIds()</a></li>
+        <li><a href="arrays-FilterInvalidIdsInGroups.htm">method FilterInvalidIdsInGroups()</a></li>
+        <li><a href="arrays-ReverseArray.htm">method ReverseArray()</a></li>
+    </ul>
+    <div class="cr_footer">Released under GPLv2, (C) 2012 Serge V. Izmaylov</div>
+
+</div></body>
+</html>

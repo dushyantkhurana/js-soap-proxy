@@ -1,0 +1,65 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>BasicService samples</title>
+    <link href="../css/samples.css" rel="stylesheet" type="text/css">
+</head>
+<body><div id="page-content">
+    <h1>BasicService samples</h1>
+
+    <h2>BasicService description</h2>
+    <p>
+        BasicService operates with primitive types, defined in basic XMLSchema namespace. Those
+        primitive types are 'built-in' in most programming languages. For example, <strong>xsd:string</strong>
+        represents text string, <strong>xsd:double</strong> represents double-precision floating-point number,
+        and so on.
+    </p>
+    <p>
+        Service interface looks like that:
+    </p>
+    <pre class="code">
+service BasicService {
+    method GiveMeString(void) returns string; // just constant string
+    method GiveMeInteger(void) returns int; // just constant int
+    method GiveMeFloat(void) returns double; // just constant double
+    method GiveMeBoolean(void) returns boolean; // just constatnt boolean
+    method GiveMeDate(void) returns datetime; // just constatnt date
+    method StringsAreEqual(string, string) returns boolean; // false if strings are different
+    method RoundFloat(double) returns int; // round value to nearest integer and returns that
+    method WhatIsNextDay(datetime) returns datetime; // calculates next day for given date & time
+}
+    </pre>
+    <p>
+        All methods, their arguments and their results are formally defined in <a href="basic-ws.php?wsdl">
+        WSDL</a>. BasicService WSDL uses simpliest form of service description.
+    </p>
+
+    <h2>BasicService implementation</h2>
+    <p>
+        BasicService implemented with PHP SOAP extension
+        <a href="basic-ws.php?service-source">(get PHP source)</a>. Ih has sample built-in
+        <a href="basic-ws.php">human-readable documentation</a>
+
+    </p>
+
+    <h2>BasicService clients</h2>
+    <p>
+        There are two types of webservice clients in this chapter. First is <a href="basic-cli.php">PHP SOAP
+        extension native client</a> <a href="basic-ws.php?client-source">(get PHP source)</a> Second uses our
+        browser-based JavaScript SOAP proxy. Here is list of pages (one per webservice method), showing
+        JavaScript SOAP proxy in action:
+    </p>
+    <ul>
+        <li><a href="basic-GiveMeString.htm">method GiveMeString()</a></li>
+        <li><a href="basic-GiveMeInteger.htm">method GiveMeInteger()</a></li>
+        <li><a href="basic-GiveMeFloat.htm">method GiveMeFloat()</a></li>
+        <li><a href="basic-GiveMeBoolean.htm">method GiveMeBoolean()</a></li>
+        <li><a href="basic-GiveMeDate.htm">method GiveMeDate()</a></li>
+        <li><a href="basic-StringsAreEqual.htm">method StringsAreEqual()</a></li>
+        <li><a href="basic-RoundFloat.htm">method RoundFloat()</a></li>
+        <li><a href="basic-WhatIsNextDay.htm">method WhatIsNextDay()</a></li>
+    </ul>
+    <div class="cr_footer">Released under GPLv2, (C) 2012 Serge V. Izmaylov</div>
+</div></body>
+</html>

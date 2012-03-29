@@ -13,6 +13,7 @@ Also, there is *SOAPProxyUtils* object used internally by JavaScript SOAP Proxy.
 
 == property 'version' ==
 {{{SOAPProxyFabric.version}}}
+
 contains library version string. E.g. "1.0"
 
 == method 'fromUrl' ==
@@ -36,6 +37,7 @@ SOAPProxyFabric.fromUrl parses WSDL from XML DOM and returns SOAPProxy built fro
 
 == method 'fromXml' ==
 {{{SOAPProxyFabric.fromXml(XMLText)}}}
+
 where XMLText is text of WSDL
 
 SOAPProxyFabric.fromUrl parses WSDL text and returns SOAPProxy built from that.

@@ -38,6 +38,7 @@ function SOAPProxy(wsdl) {
 
     // parse WSDL
     this._fetchBasicNamespaces();
+    debugger;
     this._fetchTypes();
     this._fetchElements();
     this._fetchMessages();
@@ -912,13 +913,14 @@ SOAPProxyUtils._createStandardTypes = function () {
                                         return "<"+name+" xsi:type=\"" + proxy._nsxsd +" nil\"/>";
                                     if (typeof(o) == "function")
                                         return "";
-                                    if (typeof(o) != "object")
-                                        return proxy._types["string"].serf(o, name, proxy);
+                                    var tn = SOAPProxyUtils._typeof(o);
+                                    if (tn != "object")
+                                        return proxy._types[SOAPProxyUtils._defaultTypes[tn]].serf(o, name, proxy);
                                     var s = "<" + name + " xsi:type=\"soapenc:Struct\">";
                                     for (var p in o) {
                                          var t = proxy._types[proxy._defaultTypes[SOAPProxyUtils._typeof(o[p])]];
                                          if (t != null) {
-                                             s += t.serf(o[this.children[i].eln], p, proxy);
+                                             s += t.serf(o[p], p, proxy);
                                              cnt++;
                                          }
                                     }

@@ -587,9 +587,9 @@ SOAPProxyUtils._rxdz =  /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2}(?:\.\d*
 SOAPProxyUtils._typeof = function (o) {
     if (o == null)
         return "null";
-    if (o.constructor.toString.indexOf("function Date()") != -1)
+    if (o.constructor.toString().indexOf("function Date()") != -1)
         return "date";
-    if (o.constructor.toString.indexOf("function Array()") != -1)
+    if (o.constructor.toString().indexOf("function Array()") != -1)
         if (o.length > 0)
             for (var sample in o)
                 if (isNaN(sample)) // array is hash
@@ -848,7 +848,7 @@ SOAPProxyUtils._createStandardTypes = function () {
                                        var s = "<" + name + " xsi:type=\"soapenc:Array\">";
                                        for (var i = 0; i < o.length; i++) {
                                            var t = proxy._types[proxy._defaultTypes[SOAPProxyUtils._typeof(o[i])]];
-                                           s += t.serf(o[i], t, proxy);
+                                           s += t.serf(o[i], "item", proxy);
                                        }
                                        s += "</" + name + ">";
                                        return s;
@@ -858,10 +858,10 @@ SOAPProxyUtils._createStandardTypes = function () {
                                    var res = new Array();
                                    if (n.childNodes.length > 0) {
                                        var itn = "__any";
-                                       if (n.attribytes.getNamedItem(msg._nssoapenc + "arrayType") != null) {
-                                           itn = n.attribytes.getNamedItem(msg._nssoapenc + "arrayType").nodeValue;
-                                           if (itn.IndexOf(":") != -1) itn = itn.substring(itn.IndexOf(":")+1);
-                                           if (itn.IndexOf("[") != -1) itn = itn.substring(0, itn.IndexOf("["));
+                                       if (n.attributes.getNamedItem(msg._nssoapenc + "arrayType") != null) {
+                                           itn = n.attributes.getNamedItem(msg._nssoapenc + "arrayType").nodeValue;
+                                           if (itn.indexOf(":") != -1) itn = itn.substring(itn.indexOf(":")+1);
+                                           if (itn.indexOf("[") != -1) itn = itn.substring(0, itn.indexOf("["));
                                        }
                                        if (proxy._types[itn] == null) itn = "__any";
                                        var t = proxy._types[itn];
@@ -929,13 +929,13 @@ SOAPProxyUtils._createStandardTypes = function () {
                                 }
         var _desUnknownObject = function (n, proxy, msg) {
                                     var tn = "__any";
-                                    if (n.attribytes.getNamedItem(msg._nsxsi + "type") != null) {
-                                        tn = n.attribytes.getNamedItem(msg._nsxsi + "type").nodeValue;
-                                        if (itn.IndexOf(":") != -1) tn = itn.substring(itn.IndexOf(":")+1);
+                                    if (n.attributes.getNamedItem(msg._nsxsi + "type") != null) {
+                                        tn = n.attributes.getNamedItem(msg._nsxsi + "type").nodeValue;
+                                        if (tn.indexOf(":") != -1) tn = tn.substring(tn.indexOf(":")+1);
                                     }
                                     if ((tn != "__any") && (proxy._types[tn] != null))
                                         return proxy._types[tn].desf(n, proxy, msg);
-                                    if (n.attribytes.getNamedItem(msg._nssoapenc + "arrayType") != null)
+                                    if (n.attributes.getNamedItem(msg._nssoapenc + "arrayType") != null)
                                         return proxy._types[tn].desf(n, proxy, msg);
                                     if (n.childNodes.length == 0) // empty
                                         return "";
@@ -954,6 +954,7 @@ SOAPProxyUtils._createStandardTypes = function () {
         SOAPProxyUtils._standardTypes["__null"] = { pfx: "", serf: _serNull, desf: _desNull, children: null };
     
         SOAPProxyUtils._standardTypes["__any"] = { pfx: "", serf: _serUnknownObject, desf: _desUnknownObject, children: null };
+        SOAPProxyUtils._standardTypes["ur-type"] = { pfx: "", serf: _serUnknownObject, desf: _desUnknownObject, children: null };
     
         SOAPProxyUtils._standardTypes["__dummyObject"] = { pfx: "", serf: _serKnownObject, desf: _desKnownObject, children: null };
 

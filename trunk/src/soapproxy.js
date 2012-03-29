@@ -777,7 +777,7 @@ SOAPProxyUtils._createStandardTypes = function () {
                           if (n.childNodes.length == 0)
                               return null;
                           else
-                              return (SOAPProxyUtils._nodeText(n).toLowerCase() == "true") || (parseInt(SOAPProxyUtils._nodeText(n)) != 0);
+                              return (SOAPProxyUtils._nodeText(n).toLowerCase() == "true");
                        };
         var _serInt = function (o, name, proxy) {
                           if (o == null)
@@ -963,21 +963,21 @@ SOAPProxyUtils._createStandardTypes = function () {
         SOAPProxyUtils._standardTypes["boolean"] = { pfx: "", serf: _serBool, desf: _desBool, children: null };
         SOAPProxyUtils._standardTypes["boolean[]"] = { pfx: "", serf: _serKnownArray, desf: _desKnownArray, children: [{ eln: "item", elt: "boolean" }] };
     
-        SOAPProxyUtils._standardTypes["decimal"] =
-        SOAPProxyUtils._standardTypes["float"] =
+        SOAPProxyUtils._standardTypes["decimal"] = { pfx: "", serf: _serFlo, desf: _desFlo, children: null };
+        SOAPProxyUtils._standardTypes["float"] = { pfx: "", serf: _serFlo, desf: _desFlo, children: null };
         SOAPProxyUtils._standardTypes["double"] = { pfx: "", serf: _serFlo, desf: _desFlo, children: null };
         SOAPProxyUtils._standardTypes["decimal[]"] = { pfx: "", serf: _serKnownArray, desf: _desKnownArray, children: [{ eln: "item", elt: "decimal" }] };
         SOAPProxyUtils._standardTypes["float[]"] = { pfx: "", serf: _serKnownArray, desf: _desKnownArray, children: [{ eln: "item", elt: "float" }] };
         SOAPProxyUtils._standardTypes["double[]"] = { pfx: "", serf: _serKnownArray, desf: _desKnownArray, children: [{ eln: "item", elt: "double" }] };
     
-        SOAPProxyUtils._standardTypes["integer"] =
-        SOAPProxyUtils._standardTypes["byte"] =
-        SOAPProxyUtils._standardTypes["short"] =
-        SOAPProxyUtils._standardTypes["int"] =
-        SOAPProxyUtils._standardTypes["long"] =
-        SOAPProxyUtils._standardTypes["unsignedByte"] =
-        SOAPProxyUtils._standardTypes["unsignedShort"] =
-        SOAPProxyUtils._standardTypes["unsignedInt"] =
+        SOAPProxyUtils._standardTypes["integer"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["byte"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["short"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["int"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["long"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["unsignedByte"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["unsignedShort"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
+        SOAPProxyUtils._standardTypes["unsignedInt"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
         SOAPProxyUtils._standardTypes["unsignedLong"] = { pfx: "", serf: _serInt, desf: _desInt, children: null };
         SOAPProxyUtils._standardTypes["integer[]"] = { pfx: "", serf: _serKnownArray, desf: _desKnownArray, children: [{ eln: "item", elt: "integer" }] };
         SOAPProxyUtils._standardTypes["byte[]"] = { pfx: "", serf: _serKnownArray, desf: _desKnownArray, children: [{ eln: "item", elt: "byte" }] };

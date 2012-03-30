@@ -17,7 +17,26 @@
         Service interface looks like that:
     </p>
     <pre class="code">
-type ...
+type EventSource = struct {
+    SubsystemName: string;
+    InterfaceName: string;
+}
+
+type TraceRecord = struct {
+    FileName: string;
+    FunctionName: string;
+    CodeLine: int;
+}
+
+type StackTrace = array of TraceRecord;
+
+type FailureEvent = struct {
+    Message: string;
+    Source: EventSource;
+    Stack: StackTrace;
+}
+
+type FailureEventCollection = array of FailureEvent;
 
 service MixedService {
     method GiveMeComplexObject(void) returns FailureEvent; // just constant struct

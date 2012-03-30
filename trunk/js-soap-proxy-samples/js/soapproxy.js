@@ -628,7 +628,7 @@ SOAPProxyUtils._dateToString = function (o) {
     if(o.constructor.toString().indexOf("function Date()") == -1) {
         if (typeof(o) == "string") {
             r = Date.parse(o);
-            if (isNaN(r.getTime()))
+            if (isNaN(r))
                 r = SOAPProxyUtils._stringToDate(o);
             if (r == null)
                 return "";
@@ -930,22 +930,30 @@ SOAPProxyUtils._createStandardTypes = function () {
                                 }
         var _desUnknownObject = function (n, proxy, msg) {
                                     var tn = "__any";
+                                    if (n.attributes.getNamedItem(msg._nssoapenc + "arrayType") != null) {
+                                        var atn = "__any";
+                                        atn = n.attributes.getNamedItem(msg._nssoapenc + "arrayType").nodeValue;
+                                        if (atn.indexOf(":") != -1) atn = atn.substring(atn.indexOf(":")+1);
+                                        if (atn.indexOf("[") != -1) atn = atn.substring(0, atn.indexOf("[")) + "[]";
+                                        if (proxy._types[atn] != null)
+                                            return proxy._types[atn].desf(n, proxy, msg);
+                                        else
+                                            return proxy._types["Array"].desf(n, proxy, msg)
+                                    }
                                     if (n.attributes.getNamedItem(msg._nsxsi + "type") != null) {
                                         tn = n.attributes.getNamedItem(msg._nsxsi + "type").nodeValue;
                                         if (tn.indexOf(":") != -1) tn = tn.substring(tn.indexOf(":")+1);
                                     }
-                                    if ((tn != "__any") && (proxy._types[tn] != null))
-                                        return proxy._types[tn].desf(n, proxy, msg);
-                                    if (n.attributes.getNamedItem(msg._nssoapenc + "arrayType") != null)
+                                    if ((tn != "__any") && (tn != "Struct") && (proxy._types[tn] != null))
                                         return proxy._types[tn].desf(n, proxy, msg);
                                     if (n.childNodes.length == 0) // empty
                                         return "";
-                                    if ((n.childNodes.length == 1) && ((n.childNodes.nodeType == 3) || (n.childNodes.nodeType == 4))) // has textnode
+                                    if ((n.childNodes.length == 1) && ((n.childNodes[0].nodeType == 3) || (n.childNodes[0].nodeType == 4))) // has textnode
                                         return SOAPProxyUtils._nodeText(n);
                                     var res = {};
                                     for (var i = 0; i < n.childNodes.length; i++)
                                         if (n.childNodes[i].nodeType == 1) { // elements only
-                                            res[n.childNodes[i].nodeName] = proxy._types["__any"].desf(n, proxy, msg);
+                                            res[n.childNodes[i].nodeName] = proxy._types["__any"].desf(n.childNodes[i], proxy, msg);
                                         }
                                     return res;
                                 }

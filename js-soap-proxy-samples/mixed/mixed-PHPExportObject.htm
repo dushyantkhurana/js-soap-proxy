@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-US" version="-//W3C//DTD XHTML 1.1//EN" dir="ltr">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <script language="javascript" type="text/javascript" src="../js/jquery.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../js/soapproxy.js"></script>
+    <script language="javascript" type="text/javascript" src="../js/xmlformatter.js"></script>
+    <script language="javascript" type="text/javascript" src="../js/json2.js"></script>
+    <link href="../css/samples.css" rel="stylesheet" type="text/css">
+    <title>MixedService - method GiveMeString demo</title>
+</head>
+<body><div id="page-content">
+ 
+    <h1>MixedService - method PHPExportObject demo</h1>
+
+    <p class="bar">
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input id="callSync" type="button" value="Sync call (myobj)" onclick="callSync();">
+        <input id="callAsync" type="button" value="Async call (myobj)" onclick="callAsync();">
+        <input id="clear" type="button" value="Clear all" onclick="clearAll();">
+        <img id="img_loading" src="../img/loading.gif" style="position: absolute; top: 5px; left: 5px; z-order:100;"/>
+    </p><pre class="bar" id="browser">
+    </pre><pre class="bar" id="proxy">
+    </pre><pre id="request" class="request"><h3>Request text &amp; headers</h3><span>[request placeholder]
+    </span></pre><pre id="response" class="response"><h3>Response text &amp; headers</h3><span>[response placeholder]
+    </span></pre><pre id="result" class="result"><h3>Result</h3><span>[result placeholder]
+    </span></pre>
+
+    <h2>Bolts and nuts</h2>
+
+    <h3>Operation definition</h3>
+    <pre class="code">
+    &lt;wsdl:portType name="MixedServicePort"&gt;
+        ...
+        &lt;wsdl:operation name="PHPExportObject"&gt;
+            &lt;wsdl:input message="tns:PHPExportObjectSOAPInbound"/&gt;
+            &lt;wsdl:output message="tns:PHPExportObjectSOAPOutbound"/&gt;
+        &lt;/wsdl:operation&gt;
+        ...
+    &lt;/wsdl:portType&gt;
+    ...
+    &lt;wsdl:binding name="MixedServiceBinding" type="tns:MixedServicePort"&gt;
+        &lt;soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/&gt;
+        ...
+        &lt;wsdl:operation name="PHPExportObject"&gt;
+            &lt;soap:operation soapAction="...some uri...#PHPExportObject"/&gt;
+            &lt;wsdl:input&gt;
+                &lt;soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/&gt;
+            &lt;/wsdl:input&gt;
+            &lt;wsdl:output&gt;
+                &lt;soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/&gt;
+            &lt;/wsdl:output&gt;
+        &lt;/wsdl:operation&gt;
+        ...
+    &lt;/wsdl:binding&gt;
+    </pre>
+
+    <h3>Messages</h3>
+    <pre class="code">
+    &lt;wsdl:message name="PHPExportObjectSOAPInbound"&gt;
+        &lt;wsdl:part name="ObjectToExport" type="soapenc:Struct"/&gt;
+    &lt;/wsdl:message&gt;
+    ...
+    &lt;wsdl:message name="PHPExportObjectSOAPOutbound"&gt;
+        &lt;wsdl:part name="ObjectContents" type="xsd:string"/&gt;
+    &lt;/wsdl:message&gt;
+    </pre>
+
+    <h3>Types</h3>
+
+    <p>
+        There are no custom types. All types used in this sample are defined W3C XMLSchema.
+    </p>
+
+    <div class="cr_footer">Released under GPLv2, (C) 2012 Serge V. Izmaylov</div>
+
+    <script type="text/javascript">
+        //<![CDATA[
+        var prx;
+        var myobj = {
+            FirstPart: [
+                {Id: 1, Name: "One"},
+                {Id: 2, Name: "Two"}
+            ],
+            SecondPart: {
+                Ints: [2, 3, 4, 5, 6, 7],
+                Bools: [true, true, false, true, false, true]
+            }
+        };
+
+        function dis() {
+            $("#callSync").attr("disabled", true);
+            $("#callAsync").attr("disabled", true);
+        }
+        function en() {
+            $("#callSync").removeAttr("disabled");
+            $("#callAsync").removeAttr("disabled");
+        }
+
+        dis();
+
+        $("#browser").text("Browser info:\r\n" +
+            "appCodeName: " + window.navigator.appCodeName + "\r\n" +
+            "appName: " + window.navigator.appName + "\r\n" +
+            "appVersion: " + window.navigator.appVersion + "\r\n"
+        );
+
+        function rcb(res, xml, text, proxy) {
+            $("#request span").text(proxy.lastRequestHeaders + formatXml(proxy.lastRequest));
+            $("#response span").text(proxy.lastResponseHeaders + formatXml(text));
+            $("#result span").text(JSON.stringify(res));
+            $("#img_loading").hide();
+            en();
+        }
+
+        function fcb(res, xml, text, proxy) {
+            $("#request span").text(proxy.lastRequestHeaders + formatXml(proxy.lastRequest));
+            $("#response span").text("FAULT!\r\n" + proxy.lastResponseHeaders + formatXml(text));
+            $("#result span").text(JSON.stringify(res));
+            $("#img_loading").hide();
+            en();
+        }
+
+        function gotwsdl(proxy, wsdl, text) {
+            if (proxy instanceof SOAPProxy) {
+                prx = proxy;
+                $("#proxy").text(
+                    "WSDL: " + typeof(wsdl) +
+                    (((wsdl!= null) && (wsdl.documentElement != null))?" with ":" without ") +
+                    "documentElement property" +
+                    ((proxy instanceof SOAPProxy) ? ("\r\nProxy.serviceUrl = " + proxy.serviceUrl) : "")
+                );
+                en();
+                $("#img_loading").hide();
+            } else {
+                $("#request span").text("Failed to get proxy!");
+                $("#response span").text("Failed to get proxy!");
+                $("#proxy").text("Proxy error: " + JSON.stringify(proxy));
+            }
+        }
+        function callSync() {
+            var res;
+            try {
+                res = prx.PHPExportObject({ObjectToExport: myobj}, false, rcb, fcb);
+            } catch (x) {
+                $("#response span").text("Exception in proxy.invoke():\r\n" + JSON.stringify(x));
+            }
+        }
+        function callAsync() {
+            dis();
+            $("#img_loading").show();
+            $("#request span").text("Wait...");
+            $("#response span").text("Wait...");
+            try {
+                prx.PHPExportObject({ObjectToExport: myobj}, true, rcb, fcb);
+            } catch (x) {
+                en();
+                $("#img_loading").hide();
+            }
+        }
+        function clearAll() {
+            $("#img_loading").hide();
+            $("#request span").text("[request placeholder]\r\n");
+            $("#response span").text("[response placeholder]\r\n");
+            $("#result span").text("[result placeholder]\r\n");
+        }
+
+        $(document).ready(function () {
+            $("#img_loading").show();
+            try {
+                var wsdlurl = location.href;
+                var wsdlurl = wsdlurl.substring(0, wsdlurl.lastIndexOf("/")+1) + "mixed-ws.php?wsdl";
+                SOAPProxyFabric.fromUrl(wsdlurl, true, gotwsdl);
+            } catch (x) {
+                $("#img_loading").hide();
+                $("#wsdl").text("Fabric error: " + JSON.stringify(x));
+            }
+        });
+        //]]>
+    </script>
+</div></body>
+</html>

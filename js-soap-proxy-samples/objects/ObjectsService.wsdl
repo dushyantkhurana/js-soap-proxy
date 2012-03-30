@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions name="ObjectsServiceDefs"
+        targetNamespace="http://demiurg.orgfree.com/js-soap-proxy-samples/"
+        xmlns:tns="http://demiurg.orgfree.com/js-soap-proxy-samples/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <wsdl:types>
+        <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://demiurg.orgfree.com/js-soap-proxy-samples/">
+            <xsd:complexType name="User">
+                <xsd:sequence>
+                    <xsd:element name="Id" type="xsd:int"/>
+                    <xsd:element name="Login" type="xsd:string"/>
+                    <xsd:element name="Password" type="xsd:string"/>
+                    <xsd:element name="Expires" type="xsd:dateTime"/>
+                    <xsd:element name="HomeDirectory" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="GetUserByIdSOAPInbound">
+        <wsdl:part name="UserId" type="xsd:int"/>
+    </wsdl:message>
+    <wsdl:message name="GetUserByIdSOAPOutbound">
+        <wsdl:part name="FoundUser" type="tns:User"/>
+    </wsdl:message>
+
+    <wsdl:message name="SaveUserDataSOAPInbound">
+        <wsdl:part name="ChangedUser" type="tns:User"/>
+    </wsdl:message>
+    <wsdl:message name="SaveUserDataSOAPOutbound">
+        <wsdl:part name="UpdateStatus" type="xsd:boolean"/>
+    </wsdl:message>
+
+    <wsdl:message name="CopyUserProfileSOAPInbound">
+        <wsdl:part name="NewUser" type="tns:User"/>
+        <wsdl:part name="TemplateUser" type="tns:User"/>
+    </wsdl:message>
+    <wsdl:message name="CopyUserProfileSOAPOutbound">
+        <wsdl:part name="SetUpUser" type="tns:User"/>
+    </wsdl:message>
+
+    <wsdl:message name="ListPropertiesSOAPInbound">
+        <wsdl:part name="SomeObject" type="xsd:Struct"/>
+    </wsdl:message>
+    <wsdl:message name="ListPropertiesSOAPOutbound">
+        <wsdl:part name="PropertyList" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:portType name="ObjectsServicePort">
+        <wsdl:operation name="GetUserById">
+            <wsdl:input message="tns:GetUserByIdSOAPInbound"/>
+            <wsdl:output message="tns:GetUserByIdSOAPOutbound"/>
+        </wsdl:operation>
+        <wsdl:operation name="SaveUserData">
+            <wsdl:input message="tns:SaveUserDataSOAPInbound"/>
+            <wsdl:output message="tns:SaveUserDataSOAPOutbound"/>
+        </wsdl:operation>
+        <wsdl:operation name="CopyUserProfile">
+            <wsdl:input message="tns:CopyUserProfileSOAPInbound"/>
+            <wsdl:output message="tns:CopyUserProfileSOAPOutbound"/>
+        </wsdl:operation>
+        <wsdl:operation name="ListProperties">
+            <wsdl:input message="tns:ListPropertiesSOAPInbound"/>
+            <wsdl:output message="tns:ListPropertiesSOAPOutbound"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="ObjectsServiceBinding" type="tns:ObjectsServicePort">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GetUserById">
+            <soap:operation soapAction="@@__URL__@@#GetUserById"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SaveUserData">
+            <soap:operation soapAction="@@__URL__@@#SaveUserData"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CopyUserProfile">
+            <soap:operation soapAction="@@__URL__@@#CopyUserProfile"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ListProperties">
+            <soap:operation soapAction="@@__URL__@@#ListProperties"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ObjectsService">
+        <wsdl:port name="ObjectsServicePort" binding="ObjectsServiceBinding">
+            <soap:address location="@@__URL__@@"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

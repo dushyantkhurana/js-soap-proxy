@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<wsdl:definitions name="MixedServiceDefs"
+        targetNamespace="http://demiurg.orgfree.com/js-soap-proxy-samples/"
+        xmlns:tns="http://demiurg.orgfree.com/js-soap-proxy-samples/"
+        xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+
+    <wsdl:types>
+        <xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+                targetNamespace="http://demiurg.orgfree.com/js-soap-proxy-samples/">
+            <xsd:complexType name="EventSource">
+                <xsd:sequence>
+                    <xsd:element name="SubsystemName" type="xsd:string"/>
+                    <xsd:element name="InterfaceName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="TraceRecord">
+                <xsd:sequence>
+                    <xsd:element name="FileName" type="xsd:string"/>
+                    <xsd:element name="FunctionName" type="xsd:string"/>
+                    <xsd:element name="CodeLine" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="StackTrace">
+                <xsd:sequence>
+                    <xsd:element name="item" minOccurs="0" maxOccurs="unbounded" type="tns:TraceRecord"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="FailureEvent">
+                <xsd:sequence>
+                    <xsd:element name="Message" type="xsd:string"/>
+                    <xsd:element name="Source" type="tns:EventSource"/>
+                    <xsd:element name="Stack" type="tns:StackTrace"/>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="FailureEventCollection">
+                <xsd:sequence>
+                    <xsd:element name="item" minOccurs="0" maxOccurs="unbounded" type="tns:FailureEvent"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="GiveMeComplexObjectSOAPInbound"/>
+    <wsdl:message name="GiveMeComplexObjectSOAPOutbound">
+        <wsdl:part name="Event" type="tns:FailureEvent"/>
+    </wsdl:message>
+
+    <wsdl:message name="GiveMeArrayOfComplexObjectsSOAPInbound"/>
+    <wsdl:message name="GiveMeArrayOfComplexObjectsSOAPOutbound">
+        <wsdl:part name="Events" type="tns:FailureEventCollection"/>
+    </wsdl:message>
+
+    <wsdl:message name="PHPExportObjectSOAPInbound">
+        <wsdl:part name="ObjectToExport" type="soapenc:Struct"/>
+    </wsdl:message>
+    <wsdl:message name="PHPExportObjectSOAPOutbound">
+        <wsdl:part name="ObjectContents" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:message name="GiveMeFaultSOAPInbound">
+        <wsdl:part name="TestString" type="xsd:string"/>
+    </wsdl:message>
+    <wsdl:message name="GiveMeFaultSOAPOutbound">
+        <wsdl:part name="ReplyString" type="xsd:string"/>
+    </wsdl:message>
+
+    <wsdl:portType name="MixedServicePort">
+        <wsdl:operation name="GiveMeComplexObject">
+            <wsdl:input message="tns:GiveMeComplexObjectSOAPInbound"/>
+            <wsdl:output message="tns:GiveMeComplexObjectSOAPOutbound"/>
+        </wsdl:operation>
+        <wsdl:operation name="GiveMeArrayOfComplexObjects">
+            <wsdl:input message="tns:GiveMeArrayOfComplexObjectsSOAPInbound"/>
+            <wsdl:output message="tns:GiveMeArrayOfComplexObjectsSOAPOutbound"/>
+        </wsdl:operation>
+        <wsdl:operation name="PHPExportObject">
+            <wsdl:input message="tns:PHPExportObjectSOAPInbound"/>
+            <wsdl:output message="tns:PHPExportObjectSOAPOutbound"/>
+        </wsdl:operation>
+        <wsdl:operation name="GiveMeFault">
+            <wsdl:input message="tns:GiveMeFaultSOAPInbound"/>
+            <wsdl:output message="tns:GiveMeFaultSOAPOutbound"/>
+        </wsdl:operation>
+    </wsdl:portType>
+
+    <wsdl:binding name="MixedServiceBinding" type="tns:MixedServicePort">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="GiveMeComplexObject">
+            <soap:operation soapAction="@@__URL__@@#GiveMeComplexObject"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GiveMeArrayOfComplexObjects">
+            <soap:operation soapAction="@@__URL__@@#GiveMeArrayOfComplexObjects"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="PHPExportObject">
+            <soap:operation soapAction="@@__URL__@@#PHPExportObject"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GiveMeFault">
+            <soap:operation soapAction="@@__URL__@@#GiveMeFault"/>
+            <wsdl:input>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="encoded" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="MixedService">
+        <wsdl:port name="MixedServicePort" binding="MixedServiceBinding">
+            <soap:address location="@@__URL__@@"/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

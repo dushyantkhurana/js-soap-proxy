@@ -8,9 +8,51 @@
 <body><div id="page-content">
     <h1>MixedService samples</h1>
 
+    <h2>MixedService description</h2>
     <p>
-        Under construction
+        MixedService operates with array types, defined in basic XMLSchema namespace and with custom types,
+        defined in service's WSDL. 
     </p>
+    <p>
+        Service interface looks like that:
+    </p>
+    <pre class="code">
+type ...
+
+service MixedService {
+    method GiveMeComplexObject(void) returns FailureEvent; // just constant struct
+    method GiveMeArrayOfComplexObjects(void) returns FailureEventCollection; // just constant array
+    method PHPExportObject(struct) returns string; // prints out arbitrary object
+    method GiveMeFault(void) returns string; // does not, but throws SOAP fault
+}
+    </pre>
+    <p>
+        All methods, their arguments and their results are formally defined in <a href="mixed-ws.php?wsdl">
+        WSDL</a>. MixedService WSDL uses simpliest form of service description.
+    </p>
+
+    <h2>MixedService implementation</h2>
+    <p>
+        MixedService implemented with PHP SOAP extension
+        <a href="mixed-ws.php?service-source">(get PHP source)</a>. Ih has sample built-in
+        <a href="mixed-ws.php">human-readable documentation</a>
+
+    </p>
+
+    <h2>MixedService clients</h2>
+    <p>
+        There are two types of webservice clients in this chapter. First is <a href="mixed-cli.php">PHP SOAP
+        extension native client</a> <a href="mixed-ws.php?client-source">(get PHP source)</a> Second uses our
+        browser-based JavaScript SOAP proxy. Here is list of pages (one per webservice method), showing
+        JavaScript SOAP proxy in action:
+    </p>
+    <ul>
+        <li><a href="mixed-GiveMeComplexObject.htm">method GiveMeComplexObject()</a></li>
+        <li><a href="mixed-GiveMeArrayOfComplexObjects.htm">method GiveMeArrayOfComplexObjects()</a></li>
+        <li><a href="mixed-PHPExportObject.htm">method PHPExportObject()</a></li>
+        <li><a href="mixed-GiveMeFault.htm">method GiveMeFault()</a></li>
+    </ul>
+    <div class="cr_footer">Released under GPLv2, (C) 2012 Serge V. Izmaylov</div>
 
 </div></body>
 </html>

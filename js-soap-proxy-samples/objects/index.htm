@@ -8,9 +8,57 @@
 <body><div id="page-content">
     <h1>ObjectsService samples</h1>
 
+    <h2>ObjectsService description</h2>
     <p>
-        Under construction
+        ObjectsService operates with array types, defined in basic XMLSchema namespace and with custom types,
+        defined in service's WSDL. 
     </p>
+    <p>
+        Service interface looks like that:
+    </p>
+    <pre class="code">
+type User = struct {
+    Id: int
+    Login: string
+    Password: string;
+    Expires: datetime;
+    HomeDirectory: string;
+}
+
+service ObjectsService {
+    method GetUserById(int) returns User; // just constant struct
+    method SaveUserData(User) returns boolean; // true if success (just constant)
+    method CopyUserProfile(NewUser, TemplateUser) returns User; // copies Expires and HomeDirectory from TemplateUser
+    method ListProperties(struct) returns string; // operates on unknown-type struct
+}
+    </pre>
+    <p>
+        All methods, their arguments and their results are formally defined in <a href="objects-ws.php?wsdl">
+        WSDL</a>. ObjectsService WSDL uses simpliest form of service description.
+    </p>
+
+    <h2>ObjectsService implementation</h2>
+    <p>
+        ObjectsService implemented with PHP SOAP extension
+        <a href="objects-ws.php?service-source">(get PHP source)</a>. Ih has sample built-in
+        <a href="objects-ws.php">human-readable documentation</a>
+
+    </p>
+
+    <h2>ObjectsService clients</h2>
+    <p>
+        There are two types of webservice clients in this chapter. First is <a href="objects-cli.php">PHP SOAP
+        extension native client</a> <a href="objects-ws.php?client-source">(get PHP source)</a> Second uses our
+        browser-based JavaScript SOAP proxy. Here is list of pages (one per webservice method), showing
+        JavaScript SOAP proxy in action:
+    </p>
+    <ul>
+        <li><a href="objects-GetUserById.htm">method GetUserById()</a></li>
+        <li><a href="objects-SaveUserData.htm">method SaveUserData()</a></li>
+        <li><a href="objects-CopyUserProfile.htm">method CopyUserProfile()</a></li>
+        <li><a href="objects-ListProperties.htm">method ListProperties()</a></li>
+    </ul>
+    <div class="cr_footer">Released under GPLv2, (C) 2012 Serge V. Izmaylov</div>
 
 </div></body>
 </html>

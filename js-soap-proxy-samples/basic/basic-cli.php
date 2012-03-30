@@ -15,7 +15,7 @@
 
 <?php 
     $url = "http://" . $_SERVER["SERVER_NAME"] . dirname($_SERVER["SCRIPT_NAME"]) . "/basic-ws.php?wsdl";
-    $client = new SoapClient($url, array("trace" => 1, "exceptions" => 1)); 
+    $client = new SoapClient($url, array("trace" => 1, "exceptions" => 0)); 
 ?>
     <h2>xsd:string GiveMeString()</h2>
     <pre class="console">

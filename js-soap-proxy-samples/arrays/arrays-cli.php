@@ -15,7 +15,7 @@
 
 <?php 
     $url = "http://" . $_SERVER["SERVER_NAME"] . dirname($_SERVER["SCRIPT_NAME"]) . "/arrays-ws.php?wsdl";
-    $client = new SoapClient($url, array("trace" => 1, "exceptions" => 1)); 
+    $client = new SoapClient($url, array("trace" => 1, "exceptions" => 0)); 
 ?>
     <h2>xsd:int[] GiveMeIntArray()</h2>
     <pre class="console">
@@ -72,7 +72,7 @@
 ?> 
     </pre>
 
-    <h2>tns:ArrayOfIds FilterInvalidIdsInGroups(tns:ArrayOfIds)</h2>
+    <h2>tns:ArrayOfIdGroups FilterInvalidIdsInGroups(tns:ArrayOfIdGroups)</h2>
     <pre class="console">
 <?php 
     try { 

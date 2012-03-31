@@ -627,12 +627,15 @@ SOAPProxyUtils._dateToString = function (o) {
     var r = o;
     if(o.constructor.toString().indexOf("function Date()") == -1) {
         if (typeof(o) == "string") {
-            r = Date.parse(o);
-            if (isNaN(r))
+            var t = Date.parse(o);
+            if (isNaN(t))
                 r = SOAPProxyUtils._stringToDate(o);
+            else {
+                r = new Date();
+                r.setTime(t);
+            }
             if (r == null)
                 return "";
-            
         }
     } else
         if (isNaN(r.getTime()))

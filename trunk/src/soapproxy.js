@@ -1088,10 +1088,16 @@ SOAPProxyUtils._parseComplexTypeNode = function (n, proxy) {
     return { typename: tn, type: t };
 }
 
-SOAPProxyUtils._getElementsByTagName = (window.navigator.appVersion.indexOf("Chrome") == -1) ?
+SOAPProxyUtils._getElementsByTagName = 
+    (
+        (window.navigator.appVersion.indexOf("Chrome") == -1) &&
+        (window.navigator.appName.indexOf("Opera") == -1)
+    )
+    ?
     function (n, name) {
         return n.getElementsByTagName(name)
-    } :
+    }
+    :
     function (n, name) {
         var tl;
         tl = n.getElementsByTagName(name.substring(name.indexOf(":")+1));
